@@ -47,3 +47,17 @@ const config = {
     parents are selected randomly and each child mutates by probability of 2%.
    
 4. Now we have generated the second generation, and the code is going to repeat this steps from 1 to 4 until it finds a solution with needed fitness, or it reaches a limit and restarts the algorithm with a new bunch of population.
+
+## Statistics
+
+There are two main keys in genetic algorithm that does approximately everything.
+They are: 
+- population:
+  
+    By increasing the population size, we'll get to our goal in earlier generations!
+- crossover:
+    
+    The key to enter to the next generation is the crossover. if our crossover algorithm uses a bad or non-optimal way to produce a child, the code may stock somewhere in a semi-infinite loop and can't get to the goal!
+
+
+In this problem, everything gets harder when we increase the matrix size! In this case to avoid stocking in a loop, we have to increase the population size.
