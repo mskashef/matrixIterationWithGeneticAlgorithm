@@ -17,6 +17,7 @@ function App() {
     const [populationSize, setPopulationSize] = useState(1100);
     const [path, setPath] = useState('');
     const [loading, setLoading] = useState(false);
+    const [hillLoading, setHillLoading] = useState(false);
     const [gen, setGen] = useState('');
     const handleMatrixSizeChange = (e, val) => {
         setTableSize(val);
@@ -41,6 +42,19 @@ function App() {
             })
             .catch(err => {
                 setLoading(false)
+            })
+    }
+
+    const handleSolveWithHillClimbing = () => {
+        setHillLoading(true);
+        setGen('');
+        axios.get(`http://localhost:7000/findHillClimbingSolution?matrixSize=${tableSize}`)
+            .then(res => {
+                setHillLoading(false)
+                setPath(res.data.solution);
+            })
+            .catch(err => {
+                setHillLoading(false)
             })
     }
 
@@ -122,9 +136,14 @@ function App() {
                         aria-labelledby="continuous-slider"
                     />
                 </div>
-                <Button disabled={loading} variant="contained" color="primary" style={{width: '100%', marginTop: 20, height: 50}} onClick={handleSolve}>
-                    {loading ? <CircularProgress /> : 'Find Solution'}
-                </Button>
+                <div style={{display: 'flex'}}>
+                    <Button disabled={loading || hillLoading} variant="contained" color="primary" style={{width: '100%', marginTop: 20, height: 50, textTransform: 'none', marginRight: 5}} onClick={handleSolve}>
+                        {loading ? <CircularProgress /> : 'Find Solution (Genetic)'}
+                    </Button>
+                    <Button disabled={loading || hillLoading} variant="contained" color="primary" style={{width: '100%', marginTop: 20, height: 50, textTransform: 'none', marginLeft: 5}} onClick={handleSolveWithHillClimbing}>
+                        {hillLoading ? <CircularProgress /> : 'Find Solution (Hill Climbing)'}
+                    </Button>
+                </div>
             </div>
         </div>
     );
