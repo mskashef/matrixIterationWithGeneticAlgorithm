@@ -154,8 +154,8 @@ function getLP(matrix, i = 0, j = 0) {
 
     if (neighbours.length === 0) return '';
 
-    // const randomIndex = Math.floor(Math.random() * neighbours.length);
-    const randomIndex = 0;
+    const randomIndex = Math.floor(Math.random() * neighbours.length);
+    // const randomIndex = 0;
     return neighbours[randomIndex][2] + getLP(mat, neighbours[randomIndex][0], neighbours[randomIndex][1]);
 }
 

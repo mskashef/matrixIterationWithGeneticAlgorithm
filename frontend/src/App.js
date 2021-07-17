@@ -19,6 +19,7 @@ function App() {
     const [loading, setLoading] = useState(false);
     const [hillLoading, setHillLoading] = useState(false);
     const [gen, setGen] = useState('');
+    const realPopulationSize = populationSize === 100 ? 100 : populationSize - 100;
     const handleMatrixSizeChange = (e, val) => {
         setTableSize(val);
         setPath('')
@@ -125,7 +126,7 @@ function App() {
                     />
                 </div>
                 <div className={'row'}>
-                    <div style={{width: 200, textAlign: 'left'}}>Population Size:&nbsp;&nbsp;{populationSize === 100 ? 100 : populationSize - 100}&nbsp;&nbsp;</div>
+                    <div style={{width: 200, textAlign: 'left'}}>Population Size:&nbsp;&nbsp;{realPopulationSize}&nbsp;&nbsp;</div>
                     <Slider
                         min={100}
                         max={100000 + 100}
