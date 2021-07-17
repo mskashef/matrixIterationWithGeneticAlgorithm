@@ -1,4 +1,6 @@
-# Installation 
+#Matrix Cleaner
+![img.png](screenshots/img.png)
+## Installation 
 In root directory:
 1. run `npm install`
 2. run `npm start`
