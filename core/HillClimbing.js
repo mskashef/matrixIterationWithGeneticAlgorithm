@@ -1,5 +1,7 @@
 let matrixSize = 10;
-let maxLimit = 200000;
+let maxLimit = 200000 * 10;
+const getNeighboursFunction = 2;
+const selectRandomly = true;
 const createEmptyMatrix = () => {
     let mat = [];
     for (let i = 0; i < matrixSize; i++) {
@@ -61,22 +63,22 @@ const generateRandomPath = (length) => {
     return path;
 }
 
-// const getNeighbours = (node) => {
-//     let neighbours = [];
-//     let n = Math.floor(Math.random() * node.length);
-//     let cur = node;
-//     for (let i = 0; i < 1000; i++) {
-//         for (let i = 0; i < n; i++) {
-//             let randomIndex = Math.floor(Math.random() * cur.length);
-//             const dirs = ['R', 'L', 'U', 'D'].filter(x => cur.charAt(randomIndex) !== x);
-//             let charArr = cur.split('');
-//             charArr[randomIndex] = dirs[Math.floor(Math.random() * dirs.length)];
-//             cur = charArr.join('');
-//         }
-//         neighbours.push(cur);
-//     }
-//     return neighbours;
-// }
+const getNeighbours = (node) => {
+    let neighbours = [];
+    let n = Math.floor(Math.random() * node.length);
+    let cur = node;
+    for (let i = 0; i < 1000; i++) {
+        for (let i = 0; i < n; i++) {
+            let randomIndex = Math.floor(Math.random() * cur.length);
+            const dirs = ['R', 'L', 'U', 'D'].filter(x => cur.charAt(randomIndex) !== x);
+            let charArr = cur.split('');
+            charArr[randomIndex] = dirs[Math.floor(Math.random() * dirs.length)];
+            cur = charArr.join('');
+        }
+        neighbours.push(cur);
+    }
+    return neighbours;
+}
 
 function showPathInMatrix(path, mat) {
     let pos = {x: 0, y: matrixSize - 1};
@@ -124,6 +126,8 @@ function getCopyOfMatrix(mat) {
 }
 
 function getNeighboursOf(path) {
+    if (getNeighboursFunction === 1)
+        return getNeighbours(path);
     const matrix = getMatrix(path);
     let neighbours = [];
     for (let i = 0; i < matrix.length; i++) {
@@ -153,9 +157,13 @@ function getLP(matrix, i = 0, j = 0) {
     )
 
     if (neighbours.length === 0) return '';
-
-    const randomIndex = Math.floor(Math.random() * neighbours.length);
-    // const randomIndex = 0;
+    // ---------------------------------------------
+    let randomIndex;
+    if (selectRandomly)
+        randomIndex = Math.floor(Math.random() * neighbours.length);
+    else
+        randomIndex = 0;
+    // ---------------------------------------------
     return neighbours[randomIndex][2] + getLP(mat, neighbours[randomIndex][0], neighbours[randomIndex][1]);
 }
 
@@ -174,12 +182,18 @@ const hillClimbing = () => {
         const neighbours = getNeighboursOf(current);
         let maxFitness = 0;
         let maxFitNeighbour = current;
+        let isLocalMaximum = true;
         for (const neighbour of neighbours) {
             const currentFitness = fitness(neighbour);
             if (currentFitness >= maxFitness) {
                 maxFitness = currentFitness;
                 maxFitNeighbour = neighbour;
+                isLocalMaximum = false;
             }
+        }
+        if (isLocalMaximum) {
+            console.log('LOCAL MAX :(')
+            return;
         }
         limit++;
         current = maxFitNeighbour;

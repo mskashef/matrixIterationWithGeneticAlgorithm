@@ -1,4 +1,5 @@
 const {getCopyOfMatrix} = require('../functions');
+const selectRandomly = true;
 
 class Solution {
     #path
@@ -133,9 +134,13 @@ class Solution {
         )
 
         if (neighbours.length === 0) return '';
-
-        const randomIndex = Math.floor(Math.random() * neighbours.length);
-        // const randomIndex = 0;
+        // --------------------------------------
+        let randomIndex;
+        if (selectRandomly)
+            randomIndex = Math.floor(Math.random() * neighbours.length);
+        else
+            randomIndex = 0;
+        // --------------------------------------
         return neighbours[randomIndex][2] + this.getLP(mat, neighbours[randomIndex][0], neighbours[randomIndex][1]);
     }
 

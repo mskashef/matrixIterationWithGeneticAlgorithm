@@ -58,6 +58,18 @@ function App() {
                 setHillLoading(false)
             })
     }
+    const handleSolveWithHillClimbing2 = () => {
+        setHillLoading(true);
+        setGen('');
+        axios.get(`http://localhost:7000/findHillClimbingSolution2?matrixSize=${tableSize}`)
+            .then(res => {
+                setHillLoading(false)
+                setPath(res.data.solution);
+            })
+            .catch(err => {
+                setHillLoading(false)
+            })
+    }
 
     return (
         <div className="App">
